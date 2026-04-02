@@ -136,6 +136,72 @@ function App() {
         <p>Selected category: {selectedCategory}</p>
         {/* Add game cards here */}
       </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4 col-md-6">
+              <div className="footer-section">
+                <h5>SteamPadlock Gaming Hub</h5>
+                <p>Your premium gaming destination with instant downloads and secure payments.</p>
+                <div className="social-links">
+                  <a href="https://twitter.com/steampadlock" target="_blank" className="social-link" title="Follow us on Twitter">
+                    <i className="fab fa-twitter"></i>
+                  </a>
+                  <a href="https://discord.gg/steampadlock" target="_blank" className="social-link" title="Join our Discord">
+                    <i className="fab fa-discord"></i>
+                  </a>
+                  <a href="https://steamcommunity.com/groups/steampadlock" target="_blank" className="social-link" title="Join our Steam Group">
+                    <i className="fab fa-steam"></i>
+                  </a>
+                  <a href="https://youtube.com/@steampadlock" target="_blank" className="social-link" title="Subscribe on YouTube">
+                    <i className="fab fa-youtube"></i>
+                  </a>
+                  <a href="https://facebook.com/steampadlock" target="_blank" className="social-link" title="Like us on Facebook">
+                    <i className="fab fa-facebook"></i>
+                  </a>
+                  <a href="https://instagram.com/steampadlock" target="_blank" className="social-link" title="Follow on Instagram">
+                    <i className="fab fa-instagram"></i>
+                  </a>
+                  <a href="https://tiktok.com/@steampadlock" target="_blank" className="social-link" title="Follow on TikTok">
+                    <i className="fab fa-tiktok"></i>
+                  </a>
+                  <a href="https://reddit.com/r/steampadlock" target="_blank" className="social-link" title="Join our Reddit">
+                    <i className="fab fa-reddit"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="footer-section">
+                <h5>Quick Links</h5>
+                <ul className="footer-links">
+                  <li><a href="#home">Home</a></li>
+                  <li><a href="#games">Games</a></li>
+                  <li><a href="#categories">Categories</a></li>
+                  <li><a href="#" onClick={() => alert('Support')}>Support</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="footer-section">
+                <h5>Legal</h5>
+                <ul className="footer-links">
+                  <li><a href="#" onClick={() => alert('Terms of Service')}>Terms of Service</a></li>
+                  <li><a href="#" onClick={() => alert('Privacy Policy')}>Privacy Policy</a></li>
+                  <li><a href="#" onClick={() => alert('Refund Policy')}>Refund Policy</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div className="footer-bottom">
+            <p>&copy; 2026 SteamPadlock Gaming Hub. All rights reserved.</p>
+            <p>Made with <i className="fas fa-heart text-danger"></i> for gamers</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
