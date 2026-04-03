@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import AdminDashboard from './AdminDashboard';
 
 const categories = [
   'Action', 'Adventure', 'Anime', 'Horror', 'Multiplayer', 'Open World', 'Racing', 'Shooting', 'Simulation', 'Sports', 'Strategy', 'RPG'
@@ -32,11 +33,77 @@ const subscriptions = [
   }
 ];
 
+const defaultColorScheme = {
+  name: 'Midnight Cyan',
+  primary: '#01f5f5',
+  secondary: '#0b1125',
+  accent: '#8fff3b',
+  id: 'midnight-cyan'
+};
+
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [games, setGames] = useState([]);
+  const [colorScheme, setColorScheme] = useState(defaultColorScheme);
+  const [backgroundImage, setBackgroundImage] = useState(null);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const savedGames = localStorage.getItem('steampadlock_games');
+    const savedScheme = localStorage.getItem('steampadlock_scheme');
+    const savedBg = localStorage.getItem('steampadlock_bg');
+
+    if (savedGames) setGames(JSON.parse(savedGames));
+    if (savedScheme) setColorScheme(JSON.parse(savedScheme));
+    if (savedBg) setBackgroundImage(savedBg);
+  }, []);
+
+  // Save games to localStorage
+  useEffect(() => {
+    localStorage.setItem('steampadlock_games', JSON.stringify(games));
+  }, [games]);
+
+  // Save color scheme to localStorage
+  useEffect(() => {
+    localStorage.setItem('steampadlock_scheme', JSON.stringify(colorScheme));
+  }, [colorScheme]);
+
+  // Save background to localStorage
+  useEffect(() => {
+    if (backgroundImage) {
+      localStorage.setItem('steampadlock_bg', backgroundImage);
+    }
+  }, [backgroundImage]);
+
+  const handleAddGame = (newGame) => {
+    setGames(prev => [...prev, newGame]);
+  };
+
+  const handleColorSchemeChange = (scheme) => {
+    setColorScheme(scheme);
+  };
+
+  const handleBackgroundChange = (bgImage) => {
+    setBackgroundImage(bgImage);
+  };
 
   return (
-    <div className="min-h-screen bg-midnight text-white">
+    <div 
+      className="min-h-screen text-white"
+      style={{
+        background: backgroundImage
+          ? `url(${backgroundImage})`
+          : 'linear-gradient(135deg, #050816 0%, #0b1125 50%, #000408 100%)',
+        backgroundSize: 'cover',
+        backgroundAttachment: 'fixed',
+        backgroundPosition: 'center'
+      }}
+    >
+      {/* Backdrop overlay */}
+      <div className="fixed inset-0 bg-midnight/40 backdrop-blur-xs" style={{ pointerEvents: 'none' }} />
+      
+      <div className="relative z-10">
       {/* Header */}
       <header className="modern-header">
         <nav className="navbar">
@@ -69,6 +136,24 @@ function App() {
                       </li>
                     ))}
                   </ul>
+                </li>
+                <li className="nav-item">
+                  <button
+                    onClick={() => setIsAdminOpen(true)}
+                    style={{
+                      background: `linear-gradient(135deg, ${colorScheme.primary}, ${colorScheme.accent})`,
+                      color: '#000',
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      fontSize: '14px'
+                    }}
+                    className="nav-link"
+                  >
+                    ⚙️ Admin
+                  </button>
                 </li>
               </ul>
             </div>
@@ -202,6 +287,19 @@ function App() {
           </div>
         </div>
       </footer>
+      </div>
+
+      {/* Admin Dashboard Modal */}
+      <AdminDashboard
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        onGameAdd={handleAddGame}
+        onColorSchemeChange={handleColorSchemeChange}
+        onBackgroundChange={handleBackgroundChange}
+        games={games}
+        currentColorScheme={colorScheme}
+        currentBackground={backgroundImage}
+      />
     </div>
   );
 }
