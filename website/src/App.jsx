@@ -41,12 +41,22 @@ const defaultColorScheme = {
   id: 'midnight-cyan'
 };
 
+// Hero section background rotation
+const heroBackgrounds = [
+  'linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%)',
+  'linear-gradient(135deg, #1a0033 0%, #2d0a4e 100%)',
+  'linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%)',
+  'linear-gradient(135deg, #1f0033 0%, #3a0066 100%)',
+  'linear-gradient(135deg, #0d2b42 0%, #1a4d6d 100%)',
+];
+
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [games, setGames] = useState([]);
   const [colorScheme, setColorScheme] = useState(defaultColorScheme);
   const [backgroundImage, setBackgroundImage] = useState(null);
+  const [heroBackgroundIndex, setHeroBackgroundIndex] = useState(0);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -75,6 +85,14 @@ function App() {
       localStorage.setItem('steampadlock_bg', backgroundImage);
     }
   }, [backgroundImage]);
+
+  // Rotate hero background every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroBackgroundIndex(prev => (prev + 1) % heroBackgrounds.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleAddGame = (newGame) => {
     setGames(prev => [...prev, newGame]);
@@ -162,7 +180,10 @@ function App() {
       </header>
 
       {/* Hero Section */}
-      <section className="hero-section" id="home">
+      <section className="hero-section" id="home" style={{
+        background: heroBackgrounds[heroBackgroundIndex],
+        transition: 'background 1s ease-in-out'
+      }}>
         <div className="hero-content">
           <h1 className="hero-title">Welcome to SteamPadlock Gaming Hub</h1>
           <p className="hero-subtitle">Discover, Download & Play Amazing Games</p>
